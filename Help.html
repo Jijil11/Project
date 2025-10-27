@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Help & Support</title>
 
-  <!-- ✅ EmailJS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     (function () {
@@ -137,7 +136,6 @@
       </ul>
     </div>
 
-    <!-- ✅ EmailJS Contact Form -->
     <div class="contact-form">
       <h4>📬 Contact Support</h4>
       <form id="contactForm">
@@ -163,7 +161,6 @@
     form.addEventListener('submit', function (event) {
       event.preventDefault();
 
-      // Clear previous errors
       document.getElementById('nameerror').textContent = '';
       document.getElementById('emailerror').textContent = '';
       document.getElementById('texterror').textContent = '';
@@ -199,14 +196,12 @@
         return;
       }
 
-      // Disable button while sending
       const button = form.querySelector('.btn-help');
       button.disabled = true;
       button.textContent = 'Sending...';
       statusEl.className = '';
       statusEl.textContent = '⏳ Sending...';
 
-      // ✅ Send email via EmailJS
       emailjs.sendForm('service_b8pdrsp', 'template_paw3u2u', form)
         .then(() => {
           statusEl.className = 'status-success';

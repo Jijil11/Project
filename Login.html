@@ -74,7 +74,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- Sign Up Form -->
     <div id="signupForm">
       <h2>Sign Up</h2>
       <input type="text" id="signupName" placeholder="Full Name" />
@@ -84,7 +83,6 @@
       <div class="message" id="signupMessage"></div>
     </div>
 
-    <!-- Login Form -->
     <div id="loginForm" class="hidden">
       <h2>Login</h2>
       <input type="email" id="loginEmail" placeholder="Email" />
@@ -124,7 +122,6 @@
         message.style.color = "green";
         message.textContent = `Welcome, ${name}! Please log in.`;
 
-        // Switch to login form
         document.getElementById("signupForm").classList.add("hidden");
         document.getElementById("loginForm").classList.remove("hidden");
       }
