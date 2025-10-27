@@ -603,9 +603,12 @@
       eTicket.classList.add("show");
     }
 
-    // --- Button Click ---
-    document.querySelector(".btn-bus").addEventListener("click", () => {
-      if (!validateBusForm()) return;
-      showBusTicket();
-    });
+    const confirm=document.querySelector(".btn-bus")
+confirm.addEventListener("click", ()=>{
+  if(!validateBusForm()) return;
+  showBusTicket();
+confirm.disabled=true
+confirm.textContent="Ticket Confirmed ✅"
+  
+});
   </script>

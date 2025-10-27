@@ -621,9 +621,13 @@ function showTrains() {
 }
 
 // --- Button click ---
-document.querySelector(".btn-train").addEventListener("click", ()=>{
+const confirm=document.querySelector(".btn-train")
+confirm.addEventListener("click", ()=>{
   if(!validateForm()) return;
   showTrains();
+confirm.disabled=true
+confirm.textContent="Ticket Confirmed ✅"
+  
 });
 
 </script>
