@@ -479,7 +479,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label">Tickets</label>
-          <input type="number" class="form-control" id="tickets" min="1" value="1" required>
+          <input type="number" class="form-control" id="tickets" min="1" max="10" value="1" required>
         </div>
         <div class="mb-3">
           <strong>Total: ₹<span id="total">0</span></strong>
@@ -529,6 +529,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update total price
   function updateTotal() {
+
     const price = parseInt(seatType.value || 0);
     const count = parseInt(tickets.value || 0);
     total.textContent = price * count;
@@ -536,6 +537,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   seatType.addEventListener('change', updateTotal);
   tickets.addEventListener('input', updateTotal);
+const maxTickets = 10; // You can change this limit as needed
+
+tickets.addEventListener('input', () => {
+  const value = parseInt(tickets.value);
+
+  if (value > maxTickets) {
+    tickets.value = maxTickets;
+    showError(tickets, `You can book a maximum of ${maxTickets} tickets.`);
+  } else if (value < 1) {
+    showError(tickets, "Please enter at least 1 ticket.");
+  } else {
+    clearError(tickets);
+  }
+
+  updateTotal();
+});
+
 
   // Show error messages
   function showError(input, message) {

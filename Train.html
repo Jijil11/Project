@@ -404,14 +404,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // --- Passenger fields ---
-const passengersInput = document.getElementById("passengers");
-const passengerDiv = document.getElementById("passengerDetails");
+const passengerInput = document.getElementById("passengers");
+const passengerDetailsDiv = document.getElementById("passengerDetails");
+const maxPassengers = 4;
+// Passenger limit validation with red message
+const passengerError = document.createElement("div");
+passengerError.id = "passengersError";
+passengerError.className = "error-message";
+passengerInput.after(passengerError);
+
+passengerInput.addEventListener("input", () => {
+  let value = parseInt(passengerInput.value) || 1;
+
+  if (value > maxPassengers) {
+    passengerError.textContent = `⚠️ You can book a maximum of ${maxPassengers} passengers.`;
+    passengerInput.classList.add("error");
+    passengerInput.value=maxPassengers
+    value=maxPassengers
+  } else if (value < 1) {
+    passengerError.textContent = `⚠️ At least 1 passenger required.`;
+    passengerInput.classList.add("error");
+    passengerInput.value=1
+    value=1
+  } else {
+    passengerError.textContent = "";
+    passengerInput.classList.remove("error");
+  }
+
+  renderPassengers();
+});
+
+
 
 function renderPassengers() {
-  const count = parseInt(passengersInput.value) || 1;
-  passengerDiv.innerHTML = "";
+  const count = parseInt(passengerInput.value) || 1;
+  passengerDetailsDiv.innerHTML = "";
   for (let i = 1; i <= count; i++) {
-    passengerDiv.innerHTML += `
+    passengerDetailsDiv.innerHTML += `
       <label>Passenger ${i} Name</label>
       <input type="text" id="pName${i}" class="form-control" placeholder="Enter name" />
       <div id="pName${i}Error" class="error-message"></div>
@@ -420,9 +449,23 @@ function renderPassengers() {
       <input type="number" id="pAge${i}" class="form-control" placeholder="Enter age" min="1" />
       <div id="pAge${i}Error" class="error-message"></div>
     `;
+
+    const name=document.getElementById(`pName${i}`)
+    const age=document.getElementById(`pAge${i}`)
+
+    name.addEventListener("input",()=>{
+      name.value=name.value.replace(/[^A-Za-z\s]/g,"")
+    })
+
+    age.addEventListener("input",()=>{
+      age.value=age.value.replace(/[^0-9]/g,"")
+      if(age.value.length>2){
+      age.value=age.value.slice(0,2)
+      }
+    })
+
   }
 }
-passengersInput.addEventListener("input", renderPassengers);
 renderPassengers();
 
 // --- Price calculation ---
@@ -430,7 +473,7 @@ function calculatePrice() {
   const from = document.getElementById("fromStation").value;
   const to = document.getElementById("toStation").value;
   const travelClass = document.getElementById("classcoach").value;
-  const passengers = parseInt(passengersInput.value) || 1;
+  const passengers = parseInt(passengerInput.value) || 1;
 
   const key = `${from}-${to}`;
   const baseFare = routeBaseFare[key] || 0;
@@ -486,7 +529,7 @@ function validateForm() {
   }
 
   // Validate travel date
-  const date = travelDate;
+  const date = document.getElementById("travelDate");
   if(!date.value) {
     date.classList.add("error");
     document.getElementById("travelDateError").textContent = "Select a travel date";
@@ -502,7 +545,7 @@ function validateForm() {
   }
 
   // Validate passengers
-  const passengers = parseInt(passengersInput.value) || 1;
+  const passengers = parseInt(passengerInput.value) || 1;
   for(let i=1;i<=passengers;i++){
     const nameField = document.getElementById(`pName${i}`);
     const ageField = document.getElementById(`pAge${i}`);
@@ -526,13 +569,15 @@ function validateForm() {
   return valid;
 }
 
+
+
 // --- Show trains & e-ticket ---
 function showTrains() {
   const from = document.getElementById("fromStation").value;
   const to = document.getElementById("toStation").value;
-  const date = travelDate.value;
+  const date =document.getElementById("travelDate").value
   const travelClass = document.getElementById("classcoach").value;
-  const passengers = parseInt(passengersInput.value) || 1;
+  const passengers = parseInt(passengerInput.value) || 1;
   const resultsDiv = document.getElementById("trainResults");
   const eTicket = document.getElementById("eTicket");
   const ticketDiv = document.getElementById("ticketDetails");
@@ -556,7 +601,7 @@ function showTrains() {
     passengerInfo += `<br>👤 Passenger ${i}: ${name}, Age: ${age}`;
   }
 
-  const coach = ["S1","S2","B1","B2","A1"];
+  const coach = ["B1","B2","S1","S2","A1","H1"];
   const randomCoach = coach[Math.floor(Math.random()*coach.length)];
   const randomSeat = Math.floor(1+Math.random()*72);
 
