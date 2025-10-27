@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="./logo-removebg-preview.png" alt="Logo">TicketHub</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="./Home.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="./Train.html">Train</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link active" href="./Bus.html">Bus</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="./Moive.html">Movies</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="./Help.html">Help</a>
+            </li>
+          </ul>
+  <a href="./Login.html" class="login-btn">Sign Up</a>
+        </div>
+      </div>
+  </nav>
+
+
+  <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="./train new.jpg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="./Bus.png" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="./Movie.png" class="d-block w-100" alt="...">
+    </div>
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<section class="hero">
+  <div class="hero-content">
+    <h1>Welcome to TicketHub 🎟️</h1>
+    <p>Book your Train, Bus, and Movie tickets with ease and speed.</p>
+    <a href="./Login.html" class="btn btn-primary">Get Started</a>
+  </div>
+</section>
+<section class="features">
+  <a href="./Train.html">
+  <div class="feature-box">
+    <h3>🚆 Train Booking</h3>
+    <p>Real-time schedules and instant confirmation.</p>
+    </a>
+  </div>
+    <a href="./Bus.html">
+  <div class="feature-box">
+    <h3>🚌 Bus Booking</h3>
+    <p>Choose your route, operator, and enjoy smooth travel.</p>
+  </a>
+  </div>
+
+    <a href="./Moive.html">
+  <div class="feature-box">
+    <h3>🎬 Movie Booking</h3>
+    <p>Browse movies, select seats, and grab your popcorn!</p>
+  </a>
+  </div>
+</section>
+<footer class="footer">
+  <p>&copy; 2025 TicketHub. All rights reserved.</p>
+</footer>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const myCarouselElement = document.querySelector('#carouselExampleAutoplaying');
+
+  if (myCarouselElement) {
+    new bootstrap.Carousel(myCarouselElement, {
+      interval: 2000,
+      touch: false
+    });
+  }
+});
+</script>
+</body>
+
+</html>

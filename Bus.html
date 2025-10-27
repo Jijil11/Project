@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bus Ticket Booking</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <style>
+    html,
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+      overscroll-behavior-y: contain;
+      background: url("./BUS New.png") center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+ /* Navbar Container */
+    .navbar {
+      background-color: rgb(30, 29, 35);
+      opacity: 0.9;
+      padding: 25px;
+      opacity: 0.95;
+      background-color: rgb(30, 29, 35);
+      /* margin: 5px; */
+      margin-top:0;
+      /* border-radius: 20px; */
+      opacity: 0.9;
+      position: sticky;
+      top: 0;
+      z-index: 1020;
+    }
+
+    /* Brand Logo */
+    .logo-img {
+      height: 40px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    .brand-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    /* Nav Links */
+    .navbar-nav .nav-link {
+      font-size: 18px;
+      font-weight: 900;
+      color: white;
+      padding: 10px 15px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background-color: rgb(43, 255, 0);
+      border-radius: 10px;
+      transform: translate(3px, 3px);
+      color: white;
+    }
+    .section {
+      display: block;
+      animation: fadeIn 0.6s ease-in-out;
+      padding: 40px 20px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      background: #2e2e2e;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 600px;
+      margin: 40px auto;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      font-weight: 600;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 5px;
+      display: block;
+      color: #ffffff;
+    }
+
+    .form-control {
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      padding: 10px 15px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
+      color: rgb(44, 188, 75);
+      background-color: #5c5c5c;
+    }
+
+    .form-control:focus {
+      border-color: #43cea2;
+      box-shadow: 0 0 10px #43cea2;
+      color: #1fca5b;
+      outline: none;
+
+    }
+
+    .btn-bus {
+      background: linear-gradient(to right, #43cea2, #185a9d);
+      color: white;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 30px;
+      transition: transform 0.2s ease, opacity 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .btn-bus:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    #busResults {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #fff;
+      text-align: center;
+    }
+
+    #busETicket {
+      display: none;
+      margin-top: 20px;
+      background: #f7f7f7;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+    }
+
+    #busETicket.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #busETicket h3 {
+      margin-top: 0;
+      color: #dd2476;
+    }
+    .error {
+  border-color: red;
+  box-shadow: 0 0 5px red ;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+  </style>
+</head>
+
+<body>
+ <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <!-- Logo and Brand -->
+      <a class="navbar-brand" href="#">
+        <img src="./logo-removebg-preview.png" alt="Logo" class="logo-img" />
+        <span class="brand-text">TicketHub</span>
+      </a>
+
+      <!-- Toggler for mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navigation Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="./Home.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="./Train.html">Train</a></li>
+          <li class="nav-item"><a class="nav-link" href="./Bus.html">Bus</a></li>
+          <li class="nav-item"><a class="nav-link" href="./Moive.html">Movies</a></li>
+          <li class="nav-item"><a class="nav-link" href="Help.html">Help</a></li>
+        </ul>
+
+       
+      </div>
+    </div>
+  </nav>
+  <!-- Bus Section -->
+  <div id="bus" class="section">
+    <div class="container">
+      <h2>🚌 Book Bus Ticket</h2>
+
+      <!-- From City -->
+      <label for="fromCity">From City</label>
+      <select id="fromCity" class="form-control" required>
+        <option value="">Select departure city</option>
+        <option>Kozhikode</option>
+        <option>Ernakulam</option>
+        <option>Thiruvananthapuram</option>
+        <option>Kannur</option>
+        <option>Kollam</option>
+        <option>Kasargod</option>
+        <option>Palakkad</option>
+        <option>Thrissur</option>
+        <option>Alappuzha</option>
+        <option>Kottayam</option>
+        <option>Pathanamthitta</option>
+        <option>Bengaluru</option>
+        <option>Chennai</option>
+        <option>Hyderabad</option>
+        <option>Mumbai</option>
+        <option>Delhi</option>
+        <option>Visakhapatnam</option>
+        <option>Vijayawada</option>
+        <option>Aluva</option>
+        <option>Vytila</option>
+        <option>Ambalapuzha</option>
+        <option>Guruvayoor</option>
+        <option>Varkala</option>
+      </select>
+
+      <!-- To City -->
+      <label for="toCity">To City</label>
+      <select id="toCity" class="form-control" required>
+        <option value="">Select arrival city</option>
+        <option>Kozhikode</option>
+        <option>Kochi</option>
+        <option>Ernakulam</option>
+        <option>Thiruvananthapuram</option>
+        <option>Kannur</option>
+        <option>Kollam</option>
+        <option>Kasargod</option>
+        <option>Palakkad</option>
+        <option>Thrissur</option>
+        <option>Alappuzha</option>
+        <option>Kottayam</option>
+        <option>Pathanamthitta</option>
+        <option>Bengaluru</option>
+        <option>Chennai</option>
+        <option>Hyderabad</option>
+        <option>Mumbai</option>
+        <option>Delhi</option>
+        <option>Visakhapatnam</option>
+        <option>Vijayawada</option>
+        <option>Aluva</option>
+        <option>Vytila</option>
+        <option>Ambalapuzha</option>
+        <option>Guruvayoor</option>
+        <option>Varkala</option>
+      </select>
+
+      <!-- Bus Name -->
+      <label for="busName">Bus Name</label>
+      <select id="busName" class="form-control" required>
+        <option value="">Select bus</option>
+        <option>KSRTC Superfast</option>
+        <option>Greenline Travels</option>
+        <option>Indigo Express</option>
+        <option>Bluebird Deluxe</option>
+        <option>Flix Bus</option>
+        <option>Kallada Travels</option>
+        <option>Redline AC</option>
+        <option>Kesineni Travels</option>
+        <option>Garuda Volvo</option>
+        <option>Garuda Maharaja (Scania)</option>
+        <option>Swift AC</option>
+        <option>Low Floor AC (Volvo)</option>
+        <option>Low Floor Non‑AC</option>
+      </select>
+
+      <!-- Date -->
+      <label for="travelDate">Travel Date</label>
+      <input type="date" id="travelDate" class="form-control" required>
+
+      <!-- Passengers -->
+      <label for="passengers">Passengers</label>
+      <input type="number" id="passengers" class="form-control" min="1" value="1" required>
+
+      <!-- Passenger Details -->
+      <div id="passengerDetails" required></div>
+
+      <div class="btn-wrapper">
+        <button class="btn-bus" >Confirm Booking</button>
+      </div>
+
+      <div id="busResults"></div>
+      <div id="busETicket">
+        <h3>🎫 Bus E‑Ticket Confirmation</h3>
+        <p id="busTicketDetails"></p>
+      </div>
+    </div>
+  </div>
+
+<script>
+const busBaseFare = {
+  "Kozhikode-Kochi": 300,
+  "Ernakulam-Thrissur": 200,
+  "Thiruvananthapuram-Alappuzha": 350,
+  "Kannur-Kottayam": 400,
+  "Palakkad-Pathanamthitta": 450,
+  "Kochi-Kozhikode": 300,
+  "Thrissur-Ernakulam": 200,
+  "Alappuzha-Thiruvananthapuram": 350,
+  "Kottayam-Kannur": 400,
+  "Pathanamthitta-Palakkad": 450
+};
+
+const busClassMultiplier = {
+  "KSRTC Superfast": 1,
+  "Greenline Travels": 1.2,
+  "Indigo Express": 1.5,
+  "Bluebird Deluxe": 1.8,
+  "Redline AC": 2
+};
+
+const busDurations = {
+  "Kozhikode-Kochi": "5h 30m",
+  "Ernakulam-Thrissur": "1h 45m",
+  "Thiruvananthapuram-Alappuzha": "3h 15m",
+  "Kannur-Kottayam": "6h 00m",
+  "Palakkad-Pathanamthitta": "5h 45m"
+};
+
+// Prevent past dates
+const travelDateInput = document.getElementById("travelDate");
+travelDateInput.min = new Date().toISOString().split("T")[0];
+
+// Passenger fields
+const passengerInput = document.getElementById("passengers");
+const passengerDetailsDiv = document.getElementById("passengerDetails");
+
+function renderPassengers() {
+  const count = parseInt(passengerInput.value) || 1;
+  passengerDetailsDiv.innerHTML = "";
+  for (let i = 1; i <= count; i++) {
+    passengerDetailsDiv.innerHTML += `
+      <label>Passenger ${i} Name</label>
+      <input type="text" id="pName${i}" class="form-control" placeholder="Enter name" />
+      <div id="pName${i}Error" class="error-message"></div>
+      <label>Passenger ${i} Age</label>
+      <input type="number" id="pAge${i}" class="form-control" placeholder="Enter age" min="1" />
+      <div id="pAge${i}Error" class="error-message"></div>
+    `;
+  }
+}
+
+passengerInput.addEventListener("input", renderPassengers);
+renderPassengers();
+
+// Generate seats
+function generateSeats(count, maxSeats = 40) {
+  const start = Math.floor(1 + Math.random() * (maxSeats - count + 1));
+  const seats = [];
+  for (let i = 0; i < count; i++) seats.push(`S${start + i}`);
+  return seats;
+}
+
+// --- Form Validation ---
+function validateBusForm() {
+  let valid = true;
+  const from = document.getElementById("fromCity");
+  const to = document.getElementById("toCity");
+  const busName = document.getElementById("busName");
+  const date = travelDateInput;
+  const passengers = parseInt(passengerInput.value) || 1;
+
+  // Clear previous errors
+  [from, to, busName, date].forEach(f => f.classList.remove("error"));
+  document.querySelectorAll(".error-message").forEach(e => e.textContent = "");
+
+  // From city
+  if (!from.value) {
+    from.classList.add("error");
+    if(!document.getElementById("fromCityError")){
+      const div = document.createElement("div");
+      div.id="fromCityError"; div.className="error-message";
+      from.after(div);
+    }
+    document.getElementById("fromCityError").textContent = "Select departure city";
+    valid = false;
+  }
+
+  // To city
+  if (!to.value) {
+    to.classList.add("error");
+    if(!document.getElementById("toCityError")){
+      const div = document.createElement("div");
+      div.id="toCityError"; div.className="error-message";
+      to.after(div);
+    }
+    document.getElementById("toCityError").textContent = "Select arrival city";
+    valid = false;
+  }
+
+  if(from.value && to.value && from.value === to.value){
+    from.classList.add("error"); to.classList.add("error");
+    document.getElementById("toCityError").textContent = "Departure and arrival cannot be same";
+    valid = false;
+  }
+
+  // Bus name
+  if(!busName.value){
+    busName.classList.add("error");
+    if(!document.getElementById("busNameError")){
+      const div = document.createElement("div");
+      div.id="busNameError"; div.className="error-message";
+      busName.after(div);
+    }
+    document.getElementById("busNameError").textContent = "Select bus";
+    valid = false;
+  }
+
+  // Travel date
+  if(!date.value){
+    date.classList.add("error");
+    if(!document.getElementById("travelDateError")){
+      const div = document.createElement("div");
+      div.id="travelDateError"; div.className="error-message";
+      date.after(div);
+    }
+    document.getElementById("travelDateError").textContent = "Select date";
+    valid = false;
+  }
+
+  // Passengers
+  for(let i=1;i<=passengers;i++){
+    const nameField = document.getElementById(`pName${i}`);
+    const ageField = document.getElementById(`pAge${i}`);
+    nameField.classList.remove("error"); ageField.classList.remove("error");
+    document.getElementById(`pName${i}Error`).textContent="";
+    document.getElementById(`pAge${i}Error`).textContent="";
+
+    if(!nameField.value.trim()){
+      nameField.classList.add("error");
+      document.getElementById(`pName${i}Error`).textContent="Enter name";
+      valid = false;
+    }
+    if(!ageField.value.trim() || ageField.value<=0){
+      ageField.classList.add("error");
+      document.getElementById(`pAge${i}Error`).textContent="Enter valid age";
+      valid = false;
+    }
+  }
+
+  return valid;
+}
+
+// --- Show Bus Ticket ---
+function showBusTicket() {
+  const from = document.getElementById("fromCity").value;
+  const to = document.getElementById("toCity").value;
+  const busName = document.getElementById("busName").value;
+  const date = travelDateInput.value;
+  const passengers = parseInt(passengerInput.value) || 1;
+  const key = `${from}-${to}`;
+  const baseFare = busBaseFare[key] || 250;
+  const multiplier = busClassMultiplier[busName] || 1;
+  const price = baseFare * multiplier;
+  const totalPrice = price * passengers;
+  const duration = busDurations[key] || "Varies";
+
+  const results = document.getElementById("busResults");
+  const eTicket = document.getElementById("busETicket");
+  const ticketDetails = document.getElementById("busTicketDetails");
+
+  // Passenger info
+  let passengerInfo = "";
+  for(let i=1;i<=passengers;i++){
+    const name = document.getElementById(`pName${i}`).value;
+    const age = document.getElementById(`pAge${i}`).value;
+    passengerInfo += `<br>👤 Passenger ${i}: ${name}, Age: ${age}`;
+  }
+
+  // Seats
+  const seats = [];
+  for(let i=1;i<=passengers;i++){
+    seats.push(`S${Math.floor(1 + Math.random() * 40)}`);
+  }
+
+  // Show results
+  results.innerHTML = `<strong>Bus:</strong> ${busName} from ${from} to ${to}`;
+  ticketDetails.innerHTML = `
+    <strong>Bus:</strong> ${busName}<br>
+    <strong>From:</strong> ${from}<br>
+    <strong>To:</strong> ${to}<br>
+    <strong>Date:</strong> ${date}<br>
+    <strong>Passengers:</strong> ${passengers}<br>
+    <strong>Price per Ticket:</strong> ₹${price}<br>
+    <strong>Total Price:</strong> ₹${totalPrice}<br>
+    <strong>Duration:</strong> ${duration}<br>
+    <strong>Seats:</strong> ${seats.join(", ")}<br>
+    <strong>PNR:</strong> ${Math.floor(1000000000 + Math.random()*9000000000)}
+    <br><br><strong>Passenger Details:</strong> ${passengerInfo}
+  `;
+  eTicket.classList.add("show");
+}
+
+// --- Button Click ---
+document.querySelector(".btn-bus").addEventListener("click", () => {
+  if(!validateBusForm()) return;
+  showBusTicket();
+});
+</script>

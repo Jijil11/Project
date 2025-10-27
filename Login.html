@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up & Login</title>
+  <style>
+   html, body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url("./loggg.png");
+         background-repeat: no-repeat;
+        background-size: cover;
+          background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      overscroll-behavior-y: contain;
+           height: 100%;
+      padding: 0;
+      scroll-behavior: smooth;
+
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      width: 320px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #185a9d;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #43cea2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #185a9d;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sign Up Form -->
+    <div id="signupForm">
+      <h2>Sign Up</h2>
+      <input type="text" id="signupName" placeholder="Full Name" />
+      <input type="email" id="signupEmail" placeholder="Email" />
+      <input type="password" id="signupPassword" placeholder="Password (min 8 chars)" />
+      <button onclick="signUp()">Create Account</button>
+      <div class="message" id="signupMessage"></div>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginForm" class="hidden">
+      <h2>Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email" />
+      <input type="password" id="loginPassword" placeholder="Password" />
+      <button onclick="login()">Login</button>
+      <div class="message" id="loginMessage"></div>
+    </div>
+  </div>
+
+  <script>
+    let registeredEmail = "";
+    let registeredPassword = "";
+
+    function isValidEmail(email) {
+      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return pattern.test(email);
+    }
+
+    function signUp() {
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+      const message = document.getElementById("signupMessage");
+
+      if (!name || !email || !password) {
+        message.style.color = "red";
+        message.textContent = "Please fill in all fields.";
+      } else if (!isValidEmail(email)) {
+        message.style.color = "red";
+        message.textContent = "Please enter a valid email address.";
+      } else if (password.length < 8) {
+        message.style.color = "red";
+        message.textContent = "Password must be at least 8 characters.";
+      } else {
+        registeredEmail = email;
+        registeredPassword = password;
+        message.style.color = "green";
+        message.textContent = `Welcome, ${name}! Please log in.`;
+
+        // Switch to login form
+        document.getElementById("signupForm").classList.add("hidden");
+        document.getElementById("loginForm").classList.remove("hidden");
+      }
+    }
+
+    function login() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const message = document.getElementById("loginMessage");
+
+      if (!isValidEmail(email)) {
+        message.style.color = "red";
+        message.textContent = "Invalid email format.";
+
+      } else if (password.length < 8) {
+        message.style.color = "red";
+        message.textContent = "Password must be at least 8 characters.";
+      } else if (email === registeredEmail && password === registeredPassword) {
+        message.style.color = "green";
+        message.textContent = "Login successful!";
+        setTimeout(()=>{
+            window.location.href="Home.html"
+        },1000)
+    
+      } else {
+        message.style.color = "red";
+        message.textContent = "Incorrect email or password.";
+      }
+    }
+  </script>
+</body>
+</html>

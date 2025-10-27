@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Train Booking</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <style>
+    html,
+    body {
+      overflow-x: hidden;
+      overscroll-behavior-y: contain;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url("./train.png") center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      scroll-behavior: smooth;
+    }
+
+    /* Navbar Container */
+    .navbar {
+      background-color: rgb(30, 29, 35);
+      opacity: 0.9;
+      padding: 25px;
+      opacity: 0.95;
+      background-color: rgb(30, 29, 35);
+      /* margin: 5px; */
+      margin-top:0;
+      /* border-radius: 20px; */
+      opacity: 0.9;
+      position: sticky;
+      top: 0;
+      z-index: 1020;
+    }
+
+    /* Brand Logo */
+    .logo-img {
+      height: 40px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    .brand-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    /* Nav Links */
+    .navbar-nav .nav-link {
+      font-size: 18px;
+      font-weight: 900;
+      color: white;
+      padding: 10px 15px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background-color: rgb(43, 255, 0);
+      border-radius: 10px;
+      transform: translate(3px, 3px);
+      color: white;
+    }
+
+    .section {
+      display: none;
+      animation: fadeSlideUp 0.6s ease-in-out;
+      padding: 40px 20px;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      background-color: #2e2e2e;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 600px;
+      margin: 40px auto;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      color: #f5f5f5;
+    }
+
+    h2,
+    label {
+      color: #f5f5f5;
+      text-align: center;
+    }
+
+
+
+    .form-control {
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      padding: 10px 15px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
+      color: rgb(44, 188, 75);
+      background-color: #5c5c5c;
+    }
+
+    .form-control::placeholder {
+      color: rgb(44, 188, 75);
+
+
+    }
+
+    .form-control::placeholder:focus {
+      box-shadow: 0 0 5px #43cea2;
+      border-color: #43cea2;
+    }
+
+
+
+    .form-control:focus {
+      border-color: #43cea2;
+      box-shadow: 0 0 10px #43cea2;
+      outline: none;
+      color: #1fca5b;
+
+    }
+
+    .btn-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .btn-train {
+      background: linear-gradient(to right, #43cea2, #185a9d);
+      color: white;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.3s ease;
+      min-width: 220px;
+    }
+
+    .btn-train:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    #trainResults {
+      margin-top: 20px;
+      color: #f5f5f5;
+      font-size: 1rem;
+    }
+
+    #trainResults ul {
+      padding-left: 20px;
+    }
+
+    #priceDisplay {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #eTicket {
+      display: none;
+      margin-top: 30px;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      color: #fff;
+    }
+      .error {
+    border-color: red;
+  }
+  .error-message {
+    color: red;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <!-- Logo and Brand -->
+      <a class="navbar-brand" href="#">
+        <img src="./logo-removebg-preview.png" alt="Logo" class="logo-img" />
+        <span class="brand-text">TicketHub</span>
+      </a>
+
+      <!-- Toggler for mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navigation Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="./Home.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="./Train.html">Train</a></li>
+          <li class="nav-item"><a class="nav-link" href="./Bus.html">Bus</a></li>
+          <li class="nav-item"><a class="nav-link" href="./Moive.html">Movies</a></li>
+          <li class="nav-item"><a class="nav-link" href="./Help.html">Help</a></li>
+        </ul>
+
+       
+      </div>
+    </div>
+  </nav>
+  <div id="train" class="section active">
+    <div class="container">
+      <h2>🚆 Book Train Ticket</h2>
+
+      <label for="fromStation">From Station</label>
+      <select id="fromStation" class="form-control" required>
+        <option value="">Select departure station</option>
+        <option value="Kozhikode">Kozhikode</option>
+        <option value="Ernakulam">Ernakulam</option>
+        <option value="Palakkad">Palakkad</option>
+        <option value="Shorannur">Shorannur</option>
+        <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+        <option value="Kollam">Kollam</option>
+        <option value="Kannur">Kannur</option>
+        <option value="Kasaragod">Kasaragod</option>
+        <option value="New Delhi">New Delhi</option>
+        <option value="Lucknow">Lucknow</option>
+        <option value="Kanpur Central">Kanpur Central</option>
+        <option value="Varanasi Junction">Varanasi Junction</option>
+        <option value="Agra Cantt">Agra Cantt</option>
+        <option value="Jaipur">Jaipur</option>
+        <option value="Chandigarh">Chandigarh</option>
+        <option value="Amritsar Junction">Amritsar Junction</option>
+        <option value="Jammu Tawi">Jammu Tawi</option>
+        <option value="Dehradun">Dehradun</option>
+        <option value="Haridwar Junction">Haridwar Junction</option>
+        <option value="Patna Junction">Patna Junction</option>
+        <option value="Gorakhpur Junction">Gorakhpur Junction</option>
+        <option value="Prayagraj Junction">Prayagraj Junction</option>
+        <option value="Bhopal Junction">Bhopal Junction</option>
+      </select>
+
+      <label for="toStation">To Station</label>
+      <select id="toStation" class="form-control" required>
+        <option value="">Select arrival station</option>
+        <option value="Kozhikode">Kozhikode</option>
+        <option value="Ernakulam">Ernakulam</option>
+        <option value="Palakkad">Palakkad</option>
+        <option value="Shorannur">Shorannur</option>
+        <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+        <option value="Kollam">Kollam</option>
+        <option value="Kannur">Kannur</option>
+        <option value="Kasaragod">Kasaragod</option>
+        <option value="New Delhi">New Delhi</option>
+        <option value="Lucknow">Lucknow</option>
+        <option value="Kanpur Central">Kanpur Central</option>
+        <option value="Varanasi Junction">Varanasi Junction</option>
+        <option value="Agra Cantt">Agra Cantt</option>
+        <option value="Jaipur">Jaipur</option>
+        <option value="Chandigarh">Chandigarh</option>
+        <option value="Amritsar Junction">Amritsar Junction</option>
+        <option value="Jammu Tawi">Jammu Tawi</option>
+        <option value="Dehradun">Dehradun</option>
+        <option value="Haridwar Junction">Haridwar Junction</option>
+        <option value="Patna Junction">Patna Junction</option>
+        <option value="Gorakhpur Junction">Gorakhpur Junction</option>
+        <option value="Prayagraj Junction">Prayagraj Junction</option>
+        <option value="Bhopal Junction">Bhopal Junction</option>
+      </select>
+
+      <label for="travelDate">Travel Date</label>
+      <input class="form-control" type="date" id="travelDate" required>
+
+      <label for="passengers">Number of Passengers</label>
+      <input type="number" id="passengers" class="form-control" min="1" value="1" required>
+
+      <div id="passengerDetails"></div>
+
+
+
+
+      <label for="classcoach">Class</label>
+      <select class="form-control" id="classcoach" required>
+        <option value="">Select class</option>
+        <option value="Sleeper">Sleeper (SL)</option>
+        <option value="AC 3 Tier">AC 3 Tier (3A)</option>
+        <option value="AC 2 Tier">AC 2 Tier (2A)</option>
+        <option value="AC 1st Class">AC 1st Class (1A)</option>
+        <option value="Chair Car">Chair Car (CC)</option>
+        <option value="Second Sitting">Second Sitting (2S)</option>
+        <option value="General">General (GN)</option>
+      </select>
+
+      <p id="priceDisplay"></p>
+
+      <div class="btn-wrapper">
+        <button class="btn-train">Confirm Booking</button>
+      </div>
+
+      <div id="trainResults"></div>
+      <div id="eTicket">
+        <h3>🎫 E-Ticket Confirmation</h3>
+        <p id="ticketDetails"></p>
+      </div>
+    </div>
+  </div>
+
+
+
+<script>
+const trainRoutes = {
+  "Kozhikode-Ernakulam": ["Vande Bharat Express", "Jan Shatabdi Express", "Alleppey Express"],
+  "Ernakulam-Kozhikode": ["Garib Rath Express", "Madgaon Express"],
+  "Thiruvananthapuram-Ernakulam": ["TVC Rajdhani", "TVC Jan Shatabdi", "Parasuram Express"],
+      "Ernakulam-Thiruvananthapuram": ["Venad Express", "Ernakulam Express"],
+      "Kollam-Ernakulam": ["Kollam Express", "Palaruvi Express"],
+      "Kannur-Kozhikode": ["Malabar Express", "West Coast Express"],
+      "Kasaragod-Kannur": ["Mangalore Express", "Netravati Express"],
+      "New Delhi-Ernakulam": ["Kerala Express", "Mangala Lakshadweep Express"],
+      "New Delhi-Thiruvananthapuram": ["Rajdhani Express", "Kerala Express"],
+      "Lucknow-Kozhikode": ["Lucknow Express", "Gorakhpur Express"],
+      "Kanpur Central-Kollam": ["Raptisagar Express"],
+      "Varanasi Junction-Kottayam": ["Sabari Express"],
+      "Agra Cantt-Ernakulam": ["Mangala Lakshadweep Express"],
+      "Jaipur-Kozhikode": ["Marusagar Express"],
+      "Chandigarh-Ernakulam": ["Chandigarh Express"],
+      "Amritsar Junction-Kollam": ["Amritsar Kochuveli Express"],
+      "Jammu Tawi-Kottayam": ["Himsagar Express"],
+      "Dehradun-Kannur": ["Dehradun Express"],
+      "Haridwar Junction-Kasaragod": ["Kerala Sampark Kranti"],
+      "Patna Junction-Ernakulam": ["Patna-Ernakulam Express"],
+      "Gorakhpur Junction-Kollam": ["Gorakhpur Express"],
+      "Prayagraj Junction-Kozhikode": ["Prayagraj Express"],
+      "Bhopal Junction-Ernakulam": ["Bhopal Express"],
+      "Kozhikode-Chandigarh": ["Kerala Sampark Krathi Express"],
+      "Chandigarh-Kozhikode": ["Kerala Sampark Krathi Express"]
+    };
+
+const routeBaseFare = {
+  "Kozhikode-Ernakulam": 200,
+  "Ernakulam-Kozhikode": 200,
+   "Kozhikode-Chandigarh": 880,
+      "Chandigarh-Kozhikode": 880,
+      "Kozhikode-Ernakulam": 200,
+      "Ernakulam-Kozhikode": 200,
+      "Thiruvananthapuram-Ernakulam": 250,
+      "Ernakulam-Thiruvananthapuram": 250,
+      "Kollam-Ernakulam": 150,
+      "Kannur-Kozhikode": 100,
+      "Kasaragod-Kannur": 120,
+      "New Delhi-Ernakulam": 800,
+      "New Delhi-Thiruvananthapuram": 900,
+      "Lucknow-Kozhikode": 700,
+      "Kanpur Central-Kollam": 750,
+      "Varanasi Junction-Kottayam": 650,
+      "Agra Cantt-Ernakulam": 850,
+      "Jaipur-Kozhikode": 950,
+      "Chandigarh-Ernakulam": 1000,
+      "Amritsar Junction-Kollam": 1100,
+      "Jammu Tawi-Kottayam": 1200,
+      "Dehradun-Kannur": 950,
+      "Haridwar Junction-Kasaragod": 1000,
+      "Patna Junction-Ernakulam": 900,
+      "Gorakhpur Junction-Kollam": 950,
+      "Prayagraj Junction-Kozhikode": 850,
+      "Bhopal Junction-Ernakulam": 700
+};
+
+const classMultiplier = {
+  "Sleeper": 1,
+  "AC 3 Tier": 3,
+  "AC 2 Tier": 4.5,
+  "AC 1st Class": 7
+};
+
+// --- Set min date ---
+document.addEventListener('DOMContentLoaded', () => {
+  const travelDate = document.getElementById("travelDate");
+  const today = new Date().toISOString().split("T")[0];
+  travelDate.setAttribute('min', today);
+});
+
+
+
+// --- Passenger fields ---
+const passengersInput = document.getElementById("passengers");
+const passengerDiv = document.getElementById("passengerDetails");
+
+function renderPassengers() {
+  const count = parseInt(passengersInput.value) || 1;
+  passengerDiv.innerHTML = "";
+  for (let i = 1; i <= count; i++) {
+    passengerDiv.innerHTML += `
+      <label>Passenger ${i} Name</label>
+      <input type="text" id="pName${i}" class="form-control" placeholder="Enter name" />
+      <div id="pName${i}Error" class="error-message"></div>
+
+      <label>Passenger ${i} Age</label>
+      <input type="number" id="pAge${i}" class="form-control" placeholder="Enter age" min="1" />
+      <div id="pAge${i}Error" class="error-message"></div>
+    `;
+  }
+}
+passengersInput.addEventListener("input", renderPassengers);
+renderPassengers();
+
+// --- Price calculation ---
+function calculatePrice() {
+  const from = document.getElementById("fromStation").value;
+  const to = document.getElementById("toStation").value;
+  const travelClass = document.getElementById("classcoach").value;
+  const passengers = parseInt(passengersInput.value) || 1;
+
+  const key = `${from}-${to}`;
+  const baseFare = routeBaseFare[key] || 0;
+  const multiplier = classMultiplier[travelClass] || 1;
+  return baseFare * multiplier * passengers;
+}
+
+document.getElementById("classcoach").addEventListener("change", () => {
+  const price = calculatePrice();
+  document.getElementById("priceDisplay").textContent = price ? `💰 Total: ₹${price}` : "";
+});
+
+// --- Inline Form validation for all fields ---
+function validateForm() {
+  let valid = true;
+
+  // Clear previous errors
+  ["fromStation","toStation","travelDate","classcoach"].forEach(id => {
+    const field = document.getElementById(id);
+    field.classList.remove("error");
+    let err = document.getElementById(id+"Error");
+    if(!err){
+      err = document.createElement("div");
+      err.id = id+"Error";
+      err.className = "error-message";
+      field.after(err);
+    }
+    err.textContent = "";
+  });
+
+  // Validate From station
+  const from = document.getElementById("fromStation");
+  if(!from.value) {
+    from.classList.add("error");
+    document.getElementById("fromStationError").textContent = "Select a From station";
+    valid = false;
+  }
+
+  // Validate To station
+  const to = document.getElementById("toStation");
+  if(!to.value) {
+    to.classList.add("error");
+    document.getElementById("toStationError").textContent = "Select a To station";
+    valid = false;
+  }
+
+  // Check From != To
+  if(from.value && to.value && from.value === to.value){
+    from.classList.add("error");
+    to.classList.add("error");
+    document.getElementById("toStationError").textContent = "From and To cannot be same";
+    valid = false;
+  }
+
+  // Validate travel date
+  const date = travelDate;
+  if(!date.value) {
+    date.classList.add("error");
+    document.getElementById("travelDateError").textContent = "Select a travel date";
+    valid = false;
+  }
+
+  // Validate class
+  const travelClass = document.getElementById("classcoach");
+  if(!travelClass.value) {
+    travelClass.classList.add("error");
+    document.getElementById("classcoachError").textContent = "Select class";
+    valid = false;
+  }
+
+  // Validate passengers
+  const passengers = parseInt(passengersInput.value) || 1;
+  for(let i=1;i<=passengers;i++){
+    const nameField = document.getElementById(`pName${i}`);
+    const ageField = document.getElementById(`pAge${i}`);
+    const nameErr = document.getElementById(`pName${i}Error`);
+    const ageErr = document.getElementById(`pAge${i}Error`);
+
+    nameField.classList.remove("error"); nameErr.textContent="";
+    ageField.classList.remove("error"); ageErr.textContent="";
+
+    if(!nameField.value.trim()){
+      nameField.classList.add("error"); nameErr.textContent="Enter name";
+      valid = false;
+    }
+
+    if(!ageField.value.trim() || ageField.value<=0){
+      ageField.classList.add("error"); ageErr.textContent="Enter valid age";
+      valid = false;
+    }
+  }
+
+  return valid;
+}
+
+// --- Show trains & e-ticket ---
+function showTrains() {
+  const from = document.getElementById("fromStation").value;
+  const to = document.getElementById("toStation").value;
+  const date = travelDate.value;
+  const travelClass = document.getElementById("classcoach").value;
+  const passengers = parseInt(passengersInput.value) || 1;
+  const resultsDiv = document.getElementById("trainResults");
+  const eTicket = document.getElementById("eTicket");
+  const ticketDiv = document.getElementById("ticketDetails");
+
+  const key = `${from}-${to}`;
+  if(!trainRoutes[key]){
+    resultsDiv.innerHTML = from && to ? `<strong>No trains found from ${from} to ${to}.</strong>` : "";
+    eTicket.style.display="none";
+    return;
+  }
+
+  const trains = trainRoutes[key];
+  resultsDiv.innerHTML = `<strong>Trains from ${from} to ${to}:</strong><ul>` +
+    trains.map(t => `<li>${t}</li>`).join("") + `</ul>`;
+
+  const totalPrice = calculatePrice();
+  let passengerInfo="";
+  for(let i=1;i<=passengers;i++){
+    const name = document.getElementById(`pName${i}`).value;
+    const age = document.getElementById(`pAge${i}`).value;
+    passengerInfo += `<br>👤 Passenger ${i}: ${name}, Age: ${age}`;
+  }
+
+  const coach = ["S1","S2","B1","B2","A1"];
+  const randomCoach = coach[Math.floor(Math.random()*coach.length)];
+  const randomSeat = Math.floor(1+Math.random()*72);
+
+  eTicket.style.display="block";
+  ticketDiv.innerHTML=`
+    <strong>Train:</strong> ${trains[0]}<br>
+    <strong>From:</strong> ${from}<br>
+    <strong>To:</strong> ${to}<br>
+    <strong>Date:</strong> ${date}<br>
+    <strong>Class:</strong> ${travelClass}<br>
+    <strong>Passengers:</strong> ${passengers}<br>
+    <strong>Total Price:</strong> ₹${totalPrice}<br>
+    <strong>Seat:</strong> ${randomCoach}-${randomSeat}<br>
+    <strong>PNR:</strong> ${Math.floor(1000000000 + Math.random()*9000000000)}<br>
+    <strong>Passenger Details:</strong> ${passengerInfo}
+  `;
+}
+
+// --- Button click ---
+document.querySelector(".btn-train").addEventListener("click", ()=>{
+  if(!validateForm()) return;
+  showTrains();
+});
+
+</script>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Ticket Booking</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <style>
+    html,
+    body {
+      background: url("./movies.png") center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+      overscroll-behavior-y: contain;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      scroll-behavior: smooth;
+
+    }
+       
+
+/* Navbar Container */
+.navbar {
+  background-color: rgb(30, 29, 35);
+    opacity: 0.9;
+  padding: 25px;
+  opacity: 0.95;
+   background-color: rgb(30, 29, 35);
+    opacity: 0.9;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+/* Brand Logo */
+.logo-img {
+  height: 40px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.brand-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* Nav Links */
+.navbar-nav .nav-link {
+  font-size: 18px;
+  font-weight: 900;
+  color: rgb(255, 255, 255);
+  padding: 10px 15px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: rgb(43, 255, 0);
+  border-radius: 10px;
+  transform: translate(3px, 3px);
+}
+
+    /* Movie Cards */
+    .movie-card {
+      height: 69vh;
+      width: 250px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 2px solid #4df171;
+    }
+
+    .movie-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 12px 24px rgba(111, 66, 193, 0.4);
+    }
+
+    .movie-card img {
+      height: 50vh;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .movie-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .movie-card .card-body {
+      background: #fff;
+    }
+
+    .movie-card h5 {
+      color: #1fca5b;
+      font-size: 15px;
+    }
+
+    .movie-card h6 {
+      color: #fd7e14;
+    }
+
+    /* Booking Form */
+    .booking-form {
+  display: flex;
+  flex-direction: column; /* stack heading and form vertically */
+  align-items: center; /* center horizontally */
+  background: #2e2e2e;
+  color: rgb(255, 255, 255);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+  
+
+  
+    .booking-form h3 {
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+    .form-control,
+     .form-select{
+        background-color: #5c5c5c;
+      width: 550px;
+      color: #1fca5b;
+    }
+
+
+    .form-control:focus,
+    .form-select:focus{
+      border-color: #43cea2;
+      box-shadow: 0 0 8px #43cea2; 
+      outline: none;
+      color: #1fca5b;
+      background-color: #5c5c5c;
+
+    }
+
+
+    /* Buttons */
+    .btn-primary {
+      background: #6f42c1;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: #5a32a3;
+    }
+
+    .btn-confirm {
+      border: none;
+      padding: 12px;
+    }
+
+  
+
+    .btn {
+      background: linear-gradient(to right, #43cea2, #185a9d);
+      border-radius: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      /* background: linear-gradient(to right, #43cea2, #185a9d); */
+
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+    .btn-wrapper{
+      display: flex;
+      justify-content: center;
+    }
+    .btn-wrapper button{
+      border-radius: 40px;
+      padding: 12px 30px;
+      border: none;
+    }
+
+    /* Booking Summary */
+    .summary {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #6f42c1, #fd7e14);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.6s ease;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+    /* 📱 Responsive Design */
+
+/* Medium screens (Tablets, 768px and below) */
+@media (max-width: 992px) {
+  .movie-card {
+    width: 90%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .form-control,
+  .form-select {
+    width: 100%;
+  }
+
+  .booking-form {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .navbar .navbar-nav .nav-link {
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+
+  .brand-text {
+    font-size: 20px;
+  }
+}
+
+/* Small screens (Phones, 576px and below) */
+@media (max-width: 576px) {
+  h1 {
+    font-size: 22px;
+  }
+
+  .navbar {
+    padding: 15px;
+  }
+
+  .logo-img {
+    height: 30px;
+  }
+
+  .movie-card {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .booking-form {
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 95%;
+  }
+
+  .form-control,
+  .form-select {
+    width: 100%;
+  }
+
+  .btn-wrapper button {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+
+  .summary {
+    font-size: 15px;
+    padding: 15px;
+  }
+}
+.error {
+  border-color: red ;
+  box-shadow: 0 0 5px red ;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <!-- Logo and Brand -->
+    <a class="navbar-brand" href="#">
+      <img src="./logo-removebg-preview.png" alt="Logo" class="logo-img" />
+      <span class="brand-text">TicketHub</span>
+    </a>
+
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navigation Links -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="./Home.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="./Train.html">Train</a></li>
+        <li class="nav-item"><a class="nav-link" href="./Bus.html">Bus</a></li>
+        <li class="nav-item"><a class="nav-link" href="./Moive.html">Movies</a></li>
+        <li class="nav-item"><a class="nav-link" href="Help.html">Help</a></li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <div class="container py-4">
+    <h1 class="text-center mb-4">🎬 Movie Ticket Booking</h1>
+
+    <!-- Movie Listings -->
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card movie-card">
+          <img
+            src="https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-image,i-discovery-catalog@@icons@@star-icon-202203010609.png,lx-24,ly-615,w-29,l-end:l-text,ie-OC4yLzEwICA2LjRLKyBWb3Rlcw%3D%3D,fs-29,co-FFFFFF,ly-612,lx-70,pa-8_0_0_0,l-end/et00465248-anlqjpwusb-portrait.jpg"
+            class="card-img-top" alt="Movie 1">
+          <div class="card-body text-center">
+            <h5 class="card-title">The Pet Detective</h5>
+            <h6>Comedy/Mystery/Thriller</h6>
+            <button class="btn btn-primary book-btn" data-movie="Movie 1">Book Now</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card movie-card">
+          <img
+            src="https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-image,i-discovery-catalog@@icons@@star-icon-202203010609.png,lx-24,ly-615,w-29,l-end:l-text,ie-OS4zLzEwICA0NzNLKyBWb3Rlcw%3D%3D,fs-29,co-FFFFFF,ly-612,lx-70,pa-8_0_0_0,l-end/et00377351-ctlsgzebdx-portrait.jpg"
+            class="card-img-top" alt="Movie 1">
+          <div class="card-body text-center">
+            <h5 class="card-title">Kantara:A Legend Chapter-1</h5>
+            <h6>Drama/Adventure/Thriller</h6>
+            <button class="btn btn-primary book-btn" data-movie="Movie 1">Book Now</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card movie-card">
+          <img
+            src="https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-image,i-discovery-catalog@@icons@@star-icon-202203010609.png,lx-24,ly-615,w-29,l-end:l-text,ie-Ny45LzEwICA0OUsrIFZvdGVz,fs-29,co-FFFFFF,ly-612,lx-70,pa-8_0_0_0,l-end/et00445596-mlaapmpmgx-portrait.jpg"
+            class="card-img-top" alt="Movie 1">
+          <div class="card-body text-center">
+            <h5 class="card-title">Dude</h5>
+            <h6>Comedy/Action/Romantic</h6>
+            <button class="btn btn-primary book-btn" data-movie="Movie 1">Book Now</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card movie-card">
+          <img
+            src="https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-image,i-discovery-catalog@@icons@@star-icon-202203010609.png,lx-24,ly-615,w-29,l-end:l-text,ie-OC41LzEwICAxLjdLKyBWb3Rlcw%3D%3D,fs-29,co-FFFFFF,ly-612,lx-70,pa-8_0_0_0,l-end/et00466840-qexssvnblh-portrait.jpg"
+            alt="Movie 1">
+          <div class="card-body text-center">
+            <h5 class="card-title">Paathirathri</h5>
+            <h6>Drama/Thriller</h6>
+            <button class="btn btn-primary book-btn" data-movie="Movie 1">Book Now</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card movie-card">
+          <img
+            src="https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-image,i-discovery-catalog@@icons@@like_202006280402.png,lx-24,ly-617,w-29,l-end:l-text,ie-MjIuN0srIExpa2Vz,fs-29,co-FFFFFF,ly-612,lx-70,pa-8_0_0_0,l-end/et00457717-pyjzjwwyej-portrait.jpg"
+            class="card-img-top" alt="Movie 1">
+          <div class="card-body text-center">
+            <h5 class="card-title">Nellikkampoyil Night Riders</h5>
+            <h6>Fantasy/Mystery/Thriller</h6>
+            <button class="btn btn-primary book-btn" data-movie="Movie 1">Book Now</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card movie-card">
+          <img
+            src="https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-image,i-discovery-catalog@@icons@@star-icon-202203010609.png,lx-24,ly-615,w-29,l-end:l-text,ie-OC4xLzEwICAyLjJLKyBWb3Rlcw%3D%3D,fs-29,co-FFFFFF,ly-612,lx-70,pa-8_0_0_0,l-end/et00332753-lydedyqkml-portrait.jpg"
+            class="card-img-top" alt="Movie 1">
+          <div class="card-body text-center">
+            <h5 class="card-title">Diesel</h5>
+            <h6>Action/Drama</h6>
+            <button class="btn btn-primary book-btn" data-movie="Movie 1">Book Now</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Booking Form -->
+    <div class="booking-form mt-5 d-none" id="bookingForm">
+      <h3> 🎬Book Movie Tickets</h3>
+      <form id="ticketForm">
+        <div class="mb-3">
+          <label class="form-label">Movie</label>
+          <input type="text" class="form-control" id="movieName" readonly>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Date</label>
+          <input type="date" class="form-control" id="date">
+        </div>
+
+          <label for="theater">Select Theater:</label>
+    <select id="theater" class="form-control">
+      <option value="">Theater</option>
+      <option value="Gokulam Galleria Mall">Gokulam Galleria Mall</option>
+      <option value="Crown Cinemas">Crown Cinemas</option>
+      <option value="Aashirvad Cineplex">Aashirvad Cineplex</option>
+      <option value="ARC Coronation">ARC Coronation</option>
+      <option value="Kairali Sree">Kairali Sree</option>
+      <option value="Regal Cinemas">Regal Cinemas</option>
+
+
+    </select>
+
+        <div class="mb-3">
+          <label class="form-label">Time</label>
+          <select class="form-select" id="time">
+            <option value="">Select</option>
+            <option>10:00 AM</option>
+            <option>1:00 PM</option>
+            <option>4:00 PM</option>
+            <option>7:00 PM</option>
+            <option>10:00 PM</option>
+
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Seat Type</label>
+          <select class="form-select" id="seatType">
+            <option value="">Select</option>
+            <option value="150">Gold - ₹150</option>
+            <option value="210">Platinum - ₹210</option>
+            <option value="290">Premium- ₹290</option>
+            <option value="400">Recliner - ₹400</option>
+
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Tickets</label>
+          <input type="number" class="form-control" id="tickets" min="1" value="1" required>
+        </div>
+        <div class="mb-3">
+          <strong>Total: ₹<span id="total">0</span></strong>
+        </div>
+        <div class="btn-wrapper">
+        <button type="submit" class="btn">Confirm Booking</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Booking Summary -->
+    <div class="summary d-none" id="summary">
+      <h3>Booking Confirmed ✅</h3>
+      <p id="summaryText"></p>
+    </div>
+  </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const bookBtns = document.querySelectorAll('.book-btn');
+  const bookingForm = document.getElementById('bookingForm');
+  const movieName = document.getElementById('movieName');
+  const seatType = document.getElementById('seatType');
+  const tickets = document.getElementById('tickets');
+  const total = document.getElementById('total');
+  const ticketForm = document.getElementById('ticketForm');
+  const summary = document.getElementById('summary');
+  const summaryText = document.getElementById('summaryText');
+  const theater = document.getElementById('theater');
+  const travelDateInput = document.getElementById("date");
+  const timeSelect = document.getElementById('time');
+
+  // set min date = today
+  const today = new Date().toISOString().split("T")[0];
+  travelDateInput.setAttribute("min", today);
+
+  // Show booking form when a movie card is clicked
+  bookBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      bookingForm.classList.remove('d-none');
+      movieName.value = btn.closest('.card').querySelector('.card-title').textContent;
+      summary.classList.add('d-none');
+      updateTotal();
+      bookingForm.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Update total price
+  function updateTotal() {
+    const price = parseInt(seatType.value || 0);
+    const count = parseInt(tickets.value || 0);
+    total.textContent = price * count;
+  }
+
+  seatType.addEventListener('change', updateTotal);
+  tickets.addEventListener('input', updateTotal);
+
+  // Show error messages
+  function showError(input, message) {
+    input.classList.add('is-invalid'); // Bootstrap invalid style
+    let next = input.nextElementSibling;
+    if (!next || !next.classList.contains('invalid-feedback')) {
+      const errorMsg = document.createElement('div');
+      errorMsg.className = 'invalid-feedback d-block';
+      errorMsg.textContent = message;
+      input.insertAdjacentElement('afterend', errorMsg);
+    } else {
+      next.textContent = message;
+    }
+  }
+
+  function clearError(input) {
+    input.classList.remove('is-invalid');
+    let next = input.nextElementSibling;
+    if (next && next.classList.contains('invalid-feedback')) {
+      next.remove();
+    }
+  }
+
+  // Handle form submit
+  ticketForm.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const inputs = [travelDateInput, theater, timeSelect, seatType, tickets];
+    let valid = true;
+
+    inputs.forEach(input => clearError(input));
+
+    if (!travelDateInput.value) {
+      valid = false;
+      showError(travelDateInput, "Please select a date");
+    }
+    if (!theater.value) {
+      valid = false;
+      showError(theater, "Please select a theater");
+    }
+    if (!timeSelect.value) {
+      valid = false;
+      showError(timeSelect, "Please select a time");
+    }
+    if (!seatType.value) {
+      valid = false;
+      showError(seatType, "Please select a seat type");
+    }
+    if (!tickets.value || tickets.value < 1) {
+      valid = false;
+      showError(tickets, "Enter valid number of tickets");
+    }
+
+    if (!valid) return;
+
+    // Show summary
+    bookingForm.classList.add('d-none');
+    summary.classList.remove('d-none');
+
+    const date = travelDateInput.value;
+    const time = timeSelect.value;
+
+    summaryText.textContent =
+      `🎟️ You booked ${tickets.value} ticket(s) for "${movieName.value}" at "${theater.value}" on ${date} at ${time}. Total: ₹${total.textContent}`;
+  });
+});
+</script>
+
+</body>
+
+</html>

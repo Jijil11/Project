@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help & Support</title>
+
+  <!-- ✅ EmailJS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function () {
+      emailjs.init({
+        publicKey: "coQo52oqmsCwF3ZeR", // ✅ Replace with your EmailJS public key
+      });
+    })();
+  </script>
+
+  <style>
+    html, body {
+      background: url("./help.png") no-repeat center center fixed;
+      background-size: cover;
+      overflow-x: hidden;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    .help-section {
+      background-color: #f0f8ff;
+      padding: 50px 50px;
+      border-radius: 20px;
+      margin: 60px auto;
+      max-width: 800px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+      opacity: 0.95;
+    }
+
+    .help-section h2 {
+      font-size: 2rem;
+      color: #185a9d;
+      margin-bottom: 20px;
+    }
+
+    .help-section p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .faq h4 {
+      color: #0072ff;
+      margin-bottom: 15px;
+    }
+
+    .faq ul {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+
+    .faq li {
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .contact-form {
+      margin-top: 30px;
+      text-align: left;
+    }
+
+    .contact-form label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      margin-bottom: 5px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .btn-help {
+      background-color: #43cea2;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: block;
+      margin: 15px auto 0 auto;
+    }
+
+    .btn-help:hover {
+      background-color: #185a9d;
+    }
+
+    #status {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .status-success {
+      color: green;
+    }
+    .status-error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <section id="help" class="help-section">
+    <h2>🆘 Need Help?</h2>
+    <p>If you have questions about booking, payments, or cancellations, we’re here for you.</p>
+
+    <div class="faq">
+      <h4>📌 Frequently Asked Questions</h4>
+      <ul>
+        <li><strong>How do I book a ticket?</strong><br> Choose your mode, fill the form, and confirm payment.</li>
+        <li><strong>Can I cancel a booking?</strong><br> Yes, cancellations are allowed up to 24 hours before departure.</li>
+        <li><strong>Is online payment secure?</strong><br> Absolutely. We use encrypted gateways for all transactions.</li>
+      </ul>
+    </div>
+
+    <!-- ✅ EmailJS Contact Form -->
+    <div class="contact-form">
+      <h4>📬 Contact Support</h4>
+      <form id="contactForm">
+        <input type="text" id="name" name="from_name" placeholder="Your Name" />
+        <span id="nameerror"></span>
+
+        <input type="email" id="email" name="from_email" placeholder="Your Email" />
+        <span id="emailerror"></span>
+
+        <textarea id="message" name="message" placeholder="Your Message" rows="4"></textarea>
+        <span id="texterror"></span>
+
+        <button type="submit" class="btn-help">Send Message</button>
+      </form>
+      <p id="status"></p>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const statusEl = document.getElementById('status');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      // Clear previous errors
+      document.getElementById('nameerror').textContent = '';
+      document.getElementById('emailerror').textContent = '';
+      document.getElementById('texterror').textContent = '';
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      let isValid = true;
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!name) {
+        document.getElementById('nameerror').textContent = '⚠️ Name is required';
+        isValid = false;
+      }
+
+      if (!email) {
+        document.getElementById('emailerror').textContent = '⚠️ Email is required';
+        isValid = false;
+      } else if (!emailPattern.test(email)) {
+        document.getElementById('emailerror').textContent = '❌ Invalid email format';
+        isValid = false;
+      }
+
+      if (!message) {
+        document.getElementById('texterror').textContent = '⚠️ Message cannot be empty';
+        isValid = false;
+      }
+
+      if (!isValid) {
+        statusEl.className = 'status-error';
+        statusEl.textContent = 'Please correct the highlighted errors.';
+        return;
+      }
+
+      // Disable button while sending
+      const button = form.querySelector('.btn-help');
+      button.disabled = true;
+      button.textContent = 'Sending...';
+      statusEl.className = '';
+      statusEl.textContent = '⏳ Sending...';
+
+      // ✅ Send email via EmailJS
+      emailjs.sendForm('service_b8pdrsp', 'template_paw3u2u', form)
+        .then(() => {
+          statusEl.className = 'status-success';
+          statusEl.textContent = '✅ Message sent successfully!';
+          form.reset();
+          button.disabled = false;
+          button.textContent = 'Send Message';
+        })
+        .catch((error) => {
+          statusEl.className = 'status-error';
+          statusEl.textContent = '❌ Failed to send message. Try again later.';
+          console.error('EmailJS Error:', error);
+          button.disabled = false;
+          button.textContent = 'Send Message';
+        });
+    });
+  </script>
+</body>
+</html>
